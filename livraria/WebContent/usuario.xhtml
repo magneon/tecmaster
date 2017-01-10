@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="_template.xhtml">
+	
+		<f:metadata>
+			<f:viewParam name="usuarioId" value="#{usuarioBean.usuarioId}" />
+			<f:viewAction action="#{usuarioBean.carregarUsuarioPelaId}" if="#{param.usuarioId != null}" />
+		</f:metadata>
+
+		<ui:define name="titulo">
+				<p:outputPanel>Novo Usuário</p:outputPanel>
+		</ui:define>
+
+		<ui:define name="conteudo">
+			<h:form id="usuario">
+				<p:fieldset legend="Dados do Usuário">
+					<h:panelGrid columns="3">
+
+						<p:outputLabel value="Email:" for="email" />
+						<p:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" validatorMessage="Email inválido">
+							<f:attribute name="type" value="email" />
+							<f:passThroughAttribute name="placeholder" value="Email do Usuário" />
+							<f:validateRegex pattern=".+@.+" />
+							<f:ajax event="blur" render="messageEmail" />
+						</p:inputText> 
+						<p:message for="email" id="messageEmail" />
+						
+						<p:outputLabel for="passwordOne" value="Senha:"/>
+						<p:password id="passwordOne" value="#{usuarioBean.usuario.senha}" match="passwordTwo" required="true" feedback="true" validatorMessage="Campo obrigatório"/>
+						<p:message for="passwordOne" id="passwordOneMessage" />
+							
+						<h:outputLabel for="passwordTwo" value="Repita: *" />
+						<p:password id="passwordTwo" value="#{usuarioBean.usuario.senha}" required="true" feedback="true" validatorMessage="Campo obrigatório">
+							<f:ajax event="blur" render="passwordOneMessage passwordTwoMessage"/>
+						</p:password>
+						<p:message for="passwordTwo" id="passwordTwoMessage" />
+						
+						<p:outputLabel for="usuarioPerfil" value="Perfil:"/>
+						<p:selectOneMenu value="#{usuarioBean.usuario.perfilId}" id="usuarioPerfil" required="true" requiredMessage="Campo obrigatório">
+							<f:selectItems value="#{usuarioBean.perfis}" var="perfil" itemLabel="#{perfil.label}" itemValue="#{perfil.value}" />
+						</p:selectOneMenu>
+						<p:message for="usuarioPerfil" id="perfilMessage" />
+
+						<p:commandButton value="Gravar" action="#{usuarioBean.gravar}" process="@form" update="@form :formTabelaUsuarios" />
+					</h:panelGrid>
+				</p:fieldset>
+			</h:form>
+			
+			<h:form id="formTabelaUsuarios">
+				<p:dataTable value="#{usuarioBean.usuarios}" var="usuario" paginator="true" paginatorPosition="bottom" rows="5">
+					<p:column headerText="E-mail" style="text-align: center;">
+						<p:outputLabel value="#{usuario.email}"/>
+					</p:column>
+					<p:column headerText="Perfil" style="text-align: center;">
+						<p:outputLabel value="#{usuario.perfilId}"/>
+					</p:column>
+					<p:column headerText="Alterar">
+						<p:commandLink action="#{usuarioBean.alterar(usuario)}" value="Alterar"/>
+					</p:column>
+					<p:column headerText="Excluir" style="text-align: center;">
+						<p:commandLink action="#{usuarioBean.remover(usuario)}" value="Excluir" update="formTabelaUsuarios"> 
+							<p:confirm header="Confirmação" message="Você tem certeza?"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+					
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			    </p:confirmDialog>
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</html>

@@ -68,9 +68,10 @@ public class PopulaBanco {
 		Usuario adm = new Usuario();
 //		adm.setEmail("avanade@avanade.com");
 //		adm.setSenha("1234");
+		adm.setId(1);		
 		adm.setEmail("rafael.mesquita.moura@gmail.com");
 		adm.setSenha("produtosfeed");
-		adm.setId(1);		
+		adm.setPerfilId(0);
 		daoU.pesist(adm);
 		
 		
@@ -80,11 +81,11 @@ public class PopulaBanco {
 	public void dropLista(){
 		LivroDao daoL = new LivroDao();
 		AutorDao daoA = new AutorDao();
-		UsuarioDao daoU = new UsuarioDao();
+//		UsuarioDao daoU = new UsuarioDao();
 		
 		daoL.drop();
 		daoA.drop();
-		daoU.drop();
+//		daoU.drop();
 	}
 	
 	

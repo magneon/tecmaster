@@ -32,9 +32,9 @@ public class LoginBean {
 		System.out.println("fazendo login do usuario " + this.usuario.getEmail());
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-		boolean existe = new UsuarioDao().existe(this.usuario);
-		if(existe ) {
-			context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
+		Usuario existe = new UsuarioDao().existe(this.usuario);
+		if(existe != null) {
+			context.getExternalContext().getSessionMap().put("usuarioLogado", existe);
 			return "livro?faces-redirect=true";
 		}
 		

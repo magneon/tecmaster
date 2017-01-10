@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Usuario implements Serializable {
@@ -16,6 +17,8 @@ public class Usuario implements Serializable {
 	private Integer id;
 	private String email;
 	private String senha;
+	@Transient
+	private Integer perfilId;
 	
 	public String getEmail() {
 		return email;
@@ -41,6 +44,12 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 	
+	public Integer getPerfilId() {
+		return perfilId;
+	}
 	
+	public void setPerfilId(Integer perfilId) {
+		this.perfilId = perfilId;
+	}
 
 }
