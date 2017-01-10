@@ -4,6 +4,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import br.com.prova.livraria.dao.PopulaBanco;
 import br.com.prova.livraria.dao.UsuarioDao;
@@ -35,6 +38,7 @@ public class LoginBean {
 		Usuario existe = new UsuarioDao().existe(this.usuario);
 		if(existe != null) {
 			context.getExternalContext().getSessionMap().put("usuarioLogado", existe);
+			addEmailCookie(existe);
 			return "livro?faces-redirect=true";
 		}
 		
@@ -50,5 +54,34 @@ public class LoginBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		return "login?faces-redirect=true";
+	}
+	
+	public void addEmailCookie(Usuario usuario) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
+	    HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+	    Cookie cookie = null;
+
+	    Cookie[] userCookies = request.getCookies();
+	    if (userCookies != null && userCookies.length > 0 ) {
+	        for (int i = 0; i < userCookies.length; i++) {
+	            if (userCookies[i].getName().equals("cookie-email")) {
+	                cookie = userCookies[i];
+	                break;
+	            }
+	        }
+	    }
+
+	    if (cookie != null) {
+	        cookie.setValue(usuario.getEmail());
+	    } else {
+	        cookie = new Cookie("cookie-email", usuario.getEmail());
+	        cookie.setPath(request.getContextPath());
+	    }
+
+	    cookie.setMaxAge(600);
+
+	    HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+	    response.addCookie(cookie);
 	}
 }

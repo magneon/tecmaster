@@ -51,6 +51,10 @@ public class UsuarioBean {
 		}
 	}
 	
+	public void alterar(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 	public List<Usuario> getUsuarios() {
 		return daoU.listaTodos();
 	}

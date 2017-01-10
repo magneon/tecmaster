@@ -61,7 +61,7 @@
 						<p:outputLabel value="#{usuario.perfilId}"/>
 					</p:column>
 					<p:column headerText="Alterar">
-						<p:commandLink action="#{usuarioBean.alterar(usuario)}" value="Alterar"/>
+						<p:commandLink action="#{usuarioBean.alterar(usuario)}" value="Alterar" update=":usuario"/>
 					</p:column>
 					<p:column headerText="Excluir" style="text-align: center;">
 						<p:commandLink action="#{usuarioBean.remover(usuario)}" value="Excluir" update="formTabelaUsuarios"> 
