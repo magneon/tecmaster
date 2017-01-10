@@ -55,12 +55,18 @@
 						<f:setPropertyActionListener value="#{autor}" target="#{autorBean.autor}" />
 					</p:commandButton>
 					
-					<p:commandButton icon="fa fa-fw fa-remove" action="#{autorBean.remover(autor)}" 
-						update="@form" />
+					<p:commandButton icon="fa fa-fw fa-remove" action="#{autorBean.remover(autor)}" update="@form">
+						<p:confirm header="Confirmação" message="Você tem certeza?"/>
+					</p:commandButton>
 						
-					#{autor.nome} - #{autor.email}
+					#{autor.nome} - #{autor.email} - Qtd. Livro: #{autor.quantidadeLivros}
 				</p:dataList>
-			</h:form>		
+				
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			    </p:confirmDialog>
+			</h:form>
 		</ui:define>
 
 	</ui:composition>

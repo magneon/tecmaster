@@ -18,7 +18,7 @@ public class TemaBean {
 	}
 
 	public String[] getTemas() {
-		return new String[] { "afternoon", "vader" };
+		return new String[] { "afternoon", "vader", "swanky-purse" };
 	}
 
 }

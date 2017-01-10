@@ -14,15 +14,15 @@
 			if="#{param.livroId != null}" />
 	</f:metadata>
 
-
 	<ui:define name="titulo">
 		<p:outputPanel>Novo Livro</p:outputPanel>
 	</ui:define>
 
 	<ui:define name="conteudo">
 		<h:form>
-
 			<p:messages id="messages" />
+			
+			<p:remoteCommand name="showDadosAutor" update="dadosAutor autor"/>
 
 			<p:fieldset legend="Dados do Livro">
 				<p:panelGrid columns="2">
@@ -30,9 +30,9 @@
 					<p:outputLabel value="Titulo:" for="titulo" />
 					<p:inputText id="titulo" value="#{livroBean.livro.titulo}"
 						required="true" requiredMessage="Título obrigatório"
-						validatorMessage="Título não pode ser superior a 40">
+						validatorMessage="Título não pode ser superior a 40" onblur="showDadosAutor();">
 						<f:validateLength maximum="40" />
-						<f:ajax event="blur" render="messages" />
+						<f:ajax event="blur" render="messages"/>
 					</p:inputText>
 
 					<p:outputLabel value="ISBN:" for="isbn" />
@@ -51,9 +51,8 @@
 				</p:panelGrid>
 
 			</p:fieldset>
-
-			<p:fieldset legend="Dados do Autor">
-
+			
+			<p:fieldset id="dadosAutor" legend="Dados do Autor" collapsed="#{livroBean.livro.titulo eq null}">
 				<p:panelGrid columns="4">
 					<p:outputLabel value="Selecione Autor:" for="autor" />
 					<p:selectOneMenu value="#{livroBean.autorId}" id="autor">
@@ -80,12 +79,8 @@
 					</p:column>
 				</p:dataTable>
 			</p:fieldset>
-			<p:fieldset >
-				<p:panelGrid columns="1">
-					<p:commandButton value="Gravar" action="#{livroBean.gravar}"
-						process="@form" update="@form :formTabelaLivros:tabelaLivros" />
-
-				</p:panelGrid>
+			<p:fieldset style="text-align: center; background-color: none;">
+				<p:commandButton value="Gravar" action="#{livroBean.gravar}" process="@form" update="@form :formTabelaLivros:tabelaLivros" />
 			</p:fieldset>
 
 		</h:form>
@@ -93,7 +88,7 @@
 
 		<h:form id="formTabelaLivros">
 			<p:dataTable value="#{livroBean.livros}" var="livro"
-				id="tabelaLivros" paginator="true" rows="5">
+				id="tabelaLivros" paginator="true" rows="5" paginatorPosition="bottom">
 
 				<f:facet name="header">Livros</f:facet>
 				<p:column headerText="Título" sortBy="#{livro.titulo}"
@@ -119,15 +114,22 @@
 					</h:outputText>
 				</p:column>
 
-				<p:column headerText="Alterar">
-					<h:commandLink value="altera" action="#{livroBean.carregar(livro)}" />
+				<p:column headerText="Alterar" style="text-align: center;">
+					<h:commandLink value="altera" action="#{livroBean.carregar(livro)}" onblur="showDadosAutor();"/>
 				</p:column>
 
-				<p:column headerText="Remover">
-					<h:commandLink value="remove" action="#{livroBean.remover(livro)}" />
+				<p:column headerText="Remover" style="text-align: center;">
+					<p:commandLink value="remove" action="#{livroBean.remover(livro)}" update="formTabelaLivros">
+						<p:confirm header="Confirmação" message="Você tem certeza?"/>
+					</p:commandLink>
 				</p:column>
 
 			</p:dataTable>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

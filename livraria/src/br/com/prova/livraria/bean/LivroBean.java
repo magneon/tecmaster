@@ -64,6 +64,13 @@ public class LivroBean implements Serializable {
 	
 	public void gravarAutor() {
 		Autor autor = daoA.buscaPorId(this.autorId);
+		Livro livro = daoL.buscaLivroPorISBN(this.livro);
+		
+		if (livro.getAutores().contains(autor)) {
+			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Não é possível adicionar o mesmo autor para esse livro!"));
+			return;
+		}
+		
 		this.livro.adicionaAutor(autor);
 		System.out.println("Escrito por: " + autor.getNome());
 	}
@@ -92,6 +99,7 @@ public class LivroBean implements Serializable {
 	public void remover(Livro livro) {
 		System.out.println("Removendo livro");
 		daoL.remove(livro);
+		FacesContext.getCurrentInstance().addMessage("livro", new FacesMessage("Livro excluído com sucesso!"));
 	}
 	
 	public void removerAutorDoLivro(Autor autor) {

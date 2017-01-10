@@ -2,12 +2,8 @@ package br.com.prova.livraria.dao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
 
 import br.com.prova.livraria.modelo.Autor;
 import br.com.prova.livraria.modelo.Livro;
@@ -70,8 +66,10 @@ public class PopulaBanco {
 		daoL.pesist(flor);
 
 		Usuario adm = new Usuario();
-		adm.setEmail("avanade@avanade.com");
-		adm.setSenha("1234");
+//		adm.setEmail("avanade@avanade.com");
+//		adm.setSenha("1234");
+		adm.setEmail("rafael.mesquita.moura@gmail.com");
+		adm.setSenha("produtosfeed");
 		adm.setId(1);		
 		daoU.pesist(adm);
 		

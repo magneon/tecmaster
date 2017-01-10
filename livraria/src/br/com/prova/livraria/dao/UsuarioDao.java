@@ -2,12 +2,6 @@ package br.com.prova.livraria.dao;
 
 import java.util.ArrayList;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-
-import br.com.prova.livraria.modelo.Autor;
-import br.com.prova.livraria.modelo.Livro;
 import br.com.prova.livraria.modelo.Usuario;
 
 public class UsuarioDao {

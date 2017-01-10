@@ -3,33 +3,47 @@ package br.com.prova.livraria.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.prova.livraria.modelo.Autor;
 import br.com.prova.livraria.modelo.Livro;
 
 public class LivroDao {
 
-	public static ArrayList<Livro> LSLivro = new ArrayList<Livro>();
+	public static ArrayList<Livro> listaLivro = new ArrayList<Livro>();
 	
 	
 	public void pesist(Livro livro){
-		LSLivro.add(livro);
+		Livro resultado = buscaLivroPorISBN(livro);
+		if (resultado == null) {
+			listaLivro.add(livro);
+		}
+	}
+
+
+	public Livro buscaLivroPorISBN(Livro livro) {
+		for (Livro outroLivro : listaLivro) {
+			if (outroLivro.getIsbn().equalsIgnoreCase(livro.getIsbn())) {
+				return livro;
+			}
+		}
+		return null;
 	}
 
 
 	public void drop() {
 		// TODO Auto-generated method stub
-		LSLivro.clear();
+		listaLivro.clear();
 	}
 
 
 	public List<Livro> listaTodos() {
 		// TODO Auto-generated method stub
-		return LSLivro;
+		return listaLivro;
 	}
 
 
 	public Livro buscaPorId(Integer id) {
 		// TODO Auto-generated method stub
-		for (Livro livro : LSLivro) {
+		for (Livro livro : listaLivro) {
 			if(id == livro.getId()){
 				return livro;
 							
@@ -41,13 +55,13 @@ public class LivroDao {
 
 
 	public void adiciona(Livro livro) {
-		LSLivro.add(livro);
+		listaLivro.add(livro);
 		
 	}
 
 
 	public void atualiza(Livro livro) {
-		for (Livro l : LSLivro) {
+		for (Livro l : listaLivro) {
 			if(livro.getId() == l.getId()){
 				
 				l.setTitulo(livro.getTitulo());			
@@ -57,7 +71,22 @@ public class LivroDao {
 
 
 	public void remove(Livro livro) {
-		// TODO Auto-generated method stub
+		listaLivro.remove(livro);
+	}
+
+
+	public Integer buscaQuantidadeLivrosPorAutor(Autor autor) {
+		Integer total = Integer.valueOf(0);
+	
+		for (Livro livro : listaLivro) {
+			List<Autor> autores = livro.getAutores();
+			for (Autor outroAutor : autores) {
+				if (autor.getNome().equalsIgnoreCase(outroAutor.getNome())) {
+					total += 1;
+				}
+			}
+		}
 		
+		return total;
 	}
 }

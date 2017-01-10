@@ -4,30 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.prova.livraria.modelo.Autor;
-import br.com.prova.livraria.modelo.Livro;
 
 public class AutorDao {
 
-	public static ArrayList<Autor> LSAutor = new ArrayList<Autor>();
+	public static ArrayList<Autor> listaAutor = new ArrayList<Autor>();
 
 	public void pesist(Autor autor) {
-		LSAutor.add(autor);
+		Autor resultado = buscaAutorPorEmail(autor);
+		if (resultado == null) {
+			listaAutor.add(autor);
+		}
+	}
+
+	public Autor buscaAutorPorEmail(Autor outroAutor) {
+		for (Autor autor : listaAutor) {
+			if (autor.getEmail().equalsIgnoreCase(outroAutor.getEmail())) {
+				return autor;
+			}
+		}
+		return null;
 	}
 
 	public void drop() {
 		// TODO Auto-generated method stub
-		LSAutor.clear();
+		listaAutor.clear();
 	}
 
 	public List<Autor> listaTodos() {
 		// TODO Auto-generated method stub
-		return LSAutor;
+		return listaAutor;
 	}
 
 	public Autor buscaPorId(Integer autorId) {
 
 		// TODO Auto-generated method stub
-		for (Autor autor : LSAutor) {
+		for (Autor autor : listaAutor) {
 			if (autorId == autor.getId()) {
 				return autor;
 			}
@@ -38,13 +49,12 @@ public class AutorDao {
 	}
 
 	public void remove(Autor autor) {
-		// TODO Auto-generated method stub
-		
+		listaAutor.remove(autor);
 	}
 
 	public void adiciona(Autor autor) {
-		// TODO Auto-generated method stub
-		
+		autor.setId(listaAutor.size() + 1);
+		pesist(autor);
 	}
 
 	public void atualiza(Autor autor) {
